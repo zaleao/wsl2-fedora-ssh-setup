@@ -1,0 +1,24 @@
+# Configuración de fail2ban para SSH - Versión Simple para WSL2
+# Solo logging, sin intentos de bloqueo de red
+# Este archivo debe copiarse a /etc/fail2ban/jail.d/
+
+[sshd]
+# Habilitar el jail para SSH
+enabled = true
+
+# Puerto SSH personalizado
+port = 2222
+
+# Configuración de detección
+maxretry = 5
+bantime = 3600      # 1 hora
+findtime = 600      # 10 minutos
+
+# Backend para leer logs (systemd funciona bien en WSL2)
+backend = systemd
+
+# ACCIÓN SIMPLE PARA WSL2
+# Solo registrar en logs, sin bloqueo real
+# Esto es útil para monitoreo y estadísticas
+action = dummy[actionban=echo "FAIL2BAN-WSL2: Banned IP <ip> for attacking SSH on port 2222 at $(date)" >> /var/log/fail2ban-custom.log,
+              actionunban=echo "FAIL2BAN-WSL2: Unbanned IP <ip> after bantime expired at $(date)" >> /var/log/fail2ban-custom.log]
