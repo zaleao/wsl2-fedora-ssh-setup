@@ -34,8 +34,8 @@ sudo ss -tlnp | grep :22 > /dev/null 2>&1
 show_status
 
 echo -n "   Conexión SSH local: "
-ssh -p 22 localhost -o ConnectTimeout=3 -o BatchMode=yes exit 2>/dev/null
-if [ $? -eq 255 ]; then  # 255 es OK para SSH (pide auth)
+ssh -p 22 localhost -o ConnectTimeout=3 -o BatchMode=yes "echo SSH-OK" >/dev/null 2>&1
+if [ $? -eq 0 ]; then
     echo -e "${GREEN}✅ OK${NC}"
 else
     echo -e "${RED}❌ ERROR${NC}"
